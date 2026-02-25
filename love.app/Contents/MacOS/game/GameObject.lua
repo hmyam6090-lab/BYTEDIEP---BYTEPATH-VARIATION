@@ -1,13 +1,15 @@
 --[[
     [GameObject.lua] implements the [GameObject] class which serves as 
     base class for all game objects in the game
-]]
-
-GameObject = Object:extend()
+]] GameObject = Object:extend()
 
 function GameObject:new(area, x, y, opts)
     local opts = opts or {}
-    if opts then for k, v in pairs(opts) do self[k] = v end end
+    if opts then
+        for k, v in pairs(opts) do
+            self[k] = v
+        end
+    end
 
     self.area = area
     self.x, self.y = x, y
@@ -18,7 +20,9 @@ function GameObject:new(area, x, y, opts)
 end
 
 function GameObject:update(dt)
-    if self.timer then self.timer:update(dt) end
+    if self.timer then
+        self.timer:update(dt)
+    end
 end
 
 function GameObject:draw()

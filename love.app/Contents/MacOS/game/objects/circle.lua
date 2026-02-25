@@ -12,7 +12,4 @@ end
 function Circle:draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.circle("fill", self.x, self.y or 0, self.r or 50)
-    self.timer:after(random(2, 4), function()
-        self.dead = true
-    end)
 end

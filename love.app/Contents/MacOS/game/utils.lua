@@ -1,7 +1,6 @@
 --[[
     [utils.lua] contains utility/helper functions throughout the game/infrastructure
-]]--
-
+]] --
 function UUID()
     local fn = function(x)
         local r = math.random(16) - 1
@@ -10,12 +9,18 @@ function UUID()
     end
     return (("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"):gsub("[xy]", fn))
 end
-     
+
 function random(min, max)
     if not max then -- if max is nil then it means only one value was passed in
-        return love.math.random()*min
+        return love.math.random() * min
     else
-        if min > max then min, max = max, min end
-        return love.math.random()*(max - min) + min 
+        if min > max then
+            min, max = max, min
+        end
+        return love.math.random() * (max - min) + min
     end
+end
+
+function distance(x1, y1, x2, y2)
+    return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 end
