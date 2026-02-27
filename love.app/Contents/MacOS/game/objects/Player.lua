@@ -16,8 +16,13 @@ function Player:new(area, x, y, opts)
     self.max_v = 100
     self.a = 100
 
-    self.timer:every(0.24, function()
+    -- Shooting Properties
+    self.attack_speed = 1
+
+    self.timer:every(0.24 / self.attack_speed, function()
+        print(self.attack_speed)
         self:shoot()
+        self.attack_speed = random(1, 2)
     end)
 end
 
@@ -44,5 +49,18 @@ function Player:destroy()
 end
 
 function Player:shoot()
+    local d = 1.2 * self.w
+    self.area:addGameObject('ShootEffect', self.x + d * math.cos(self.r), self.y + d * math.sin(self.r), {
+        player = self,
+        d = d
+    })
 
+    for i = 1, 3, 1 do
+        self.area:addGameObject('Projectile', self.x + 1.5 * d * math.cos(self.r), self.y + 1.5 * d * math.sin(self.r),
+            {
+                r = self.r,
+                s = 5,
+                v = 150
+            })
+    end
 end
