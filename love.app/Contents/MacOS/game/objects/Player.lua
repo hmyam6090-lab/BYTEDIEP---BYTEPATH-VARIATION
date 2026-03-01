@@ -24,6 +24,10 @@ function Player:new(area, x, y, opts)
         self:shoot()
         self.attack_speed = random(1, 2)
     end)
+
+    input:bind('f', function()
+        self:die()
+    end)
 end
 
 function Player:update(dt)
@@ -37,6 +41,19 @@ function Player:update(dt)
 
     self.v = math.min(self.v + self.a * dt, self.max_v)
     self.collider:setLinearVelocity(self.v * math.cos(self.r), self.v * math.sin(self.r))
+
+    if self.x < 0 then
+        self:die()
+    end
+    if self.y < 0 then
+        self:die()
+    end
+    if self.x > gw then
+        self:die()
+    end
+    if self.y > gh then
+        self:die()
+    end
 end
 
 function Player:draw()
@@ -45,7 +62,7 @@ function Player:draw()
 end
 
 function Player:destroy()
-    Player.super.destroy()
+    Player.super.destroy(self)
 end
 
 function Player:shoot()
@@ -55,12 +72,18 @@ function Player:shoot()
         d = d
     })
 
-    for i = 1, 3, 1 do
-        self.area:addGameObject('Projectile', self.x + 1.5 * d * math.cos(self.r), self.y + 1.5 * d * math.sin(self.r),
-            {
-                r = self.r,
-                s = 5,
-                v = 150
-            })
+    self.area:addGameObject('Projectile', self.x + 1.5 * d * math.cos(self.r), self.y + 1.5 * d * math.sin(self.r), {
+        r = self.r,
+        v = 100
+    })
+end
+
+function Player:die()
+    slow(0.15, 1)
+    flash(4)
+    camera:shake(6, 60, 0.4)
+    for i = 1, love.math.random(8, 12) do
+        self.area:addGameObject('ExplodeParticle', self.x, self.y)
     end
+    self.dead = true
 end

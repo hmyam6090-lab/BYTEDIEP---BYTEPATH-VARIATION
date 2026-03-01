@@ -23,6 +23,8 @@ Physics = require 'libraries/windfield'
 
 require 'GameObject'
 require 'utils'
+require 'globals'
+
 --[[
     recursiveEnumerate(folder, file_list) takes a [folder] name and a lua table [file_list]
     and scans all the lua files in that directory recursively and append the
@@ -92,6 +94,9 @@ function love.load()
     love.graphics.setDefaultFilter('nearest')
     love.graphics.setLineStyle('rough')
 
+    slow_amount = 1
+    flash_frames = nil
+
     camera = Camera()
 
     input:bind('1', function()
@@ -118,13 +123,13 @@ function love.load()
 end
 
 function love.update(dt)
-    timer:update(dt)
+    timer:update(dt * slow_amount)
 
     if current_room then
-        current_room:update(dt)
+        current_room:update(dt * slow_amount)
     end
 
-    camera:update(dt)
+    camera:update(dt * slow_amount)
 end
 
 function love.draw()
@@ -132,10 +137,28 @@ function love.draw()
         current_room:draw()
     end
 
+    if flash_frames then
+        flash_frames = flash_frames - 1
+        if flash_frames == -1 then
+            flash_frames = nil
+        end
+    end
+    if flash_frames then
+        love.graphics.setColor(background_color)
+        love.graphics.rectangle('fill', 0, 0, sx * gw, sy * gh)
+        love.graphics.setColor(255, 255, 255)
+    end
 end
 
-function love.keypressed(key)
+function slow(amount, duration)
+    slow_amount = amount
+    timer:tween('slow', duration, _G, {
+        slow_amount = 1
+    }, 'in-out-cubic')
+end
 
+function flash(frames)
+    flash_frames = frames
 end
 
 --[[

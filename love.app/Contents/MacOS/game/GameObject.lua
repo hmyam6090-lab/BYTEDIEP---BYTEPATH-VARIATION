@@ -17,13 +17,13 @@ function GameObject:new(area, x, y, opts)
     self.creation_time = love.timer.getTime()
     self.timer = Timer()
     self.dead = false
+    self.depth = 50
 end
 
 function GameObject:update(dt)
     if self.timer then
         self.timer:update(dt)
     end
-
     if self.collider then
         self.x, self.y = self.collider:getPosition()
     end
