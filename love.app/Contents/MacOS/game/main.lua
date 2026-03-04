@@ -117,6 +117,8 @@ function love.load()
 
     input:bind('a', "left")
     input:bind('d', "right")
+    input:bind('w', "up")
+    input:bind("s", "down")
 
     current_room = nil
     gotoRoom('Stage')
@@ -135,6 +137,14 @@ end
 function love.draw()
     if current_room then
         current_room:draw()
+    end
+
+    -- Display ship name in top-left corner
+    if current_room and current_room.player and not current_room.player.dead then
+        love.graphics.setColor(default_color)
+        love.graphics.setFont(love.graphics.newFont(14))
+        love.graphics.print('Ship: ' .. current_room.player.ship, 10, 10)
+        love.graphics.setColor(255, 255, 255)
     end
 
     if flash_frames then
