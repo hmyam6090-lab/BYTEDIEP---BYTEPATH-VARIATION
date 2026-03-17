@@ -20,6 +20,8 @@ Timer = require 'libraries/hump/EnhancedTimer'
 Camera = require 'libraries/hump/camera'
 fn = require 'libraries/moses/moses'
 Physics = require 'libraries/windfield'
+Draft = require 'libraries/draft/draft'
+draft = Draft(modeOption)
 
 require 'GameObject'
 require 'utils'
@@ -64,6 +66,12 @@ function gotoRoom(room_type, ...)
         current_room:destroy()
     end
     current_room = _G[room_type](...)
+
+    if room_type == 'Stage' then
+        setMusic('stage')
+    else
+        setMusic('menu')
+    end
 end
 
 function printString(...)
@@ -89,6 +97,8 @@ function love.load()
     input = Input()
     timer = Timer()
     fn = fn()
+    initUiTheme()
+    initAudioTheme()
 
     resize(3)
     love.graphics.setDefaultFilter('nearest')
@@ -98,6 +108,11 @@ function love.load()
     flash_frames = nil
 
     camera = Camera()
+
+    -- Fullscreen toggle
+    input:bind('f11', function()
+        love.window.setFullscreen(not love.window.getFullscreen())
+    end)
 
     input:bind('1', function()
         print("Before collection: " .. collectgarbage("count") / 1024)
@@ -115,13 +130,15 @@ function love.load()
         gotoRoom('Stage')
     end)
 
-    input:bind('a', "left")
-    input:bind('d', "right")
-    input:bind('w', "up")
-    input:bind("s", "down")
+    input:bind('mouse1', "shoot")
+    input:bind('space', "skill")
+    
+    -- Menu bindings
+    input:bind('return', "menu_start")
+    input:bind('escape', "menu_quit")
 
     current_room = nil
-    gotoRoom('Stage')
+    gotoRoom('MainMenu')
 end
 
 function love.update(dt)
@@ -137,14 +154,6 @@ end
 function love.draw()
     if current_room then
         current_room:draw()
-    end
-
-    -- Display ship name in top-left corner
-    if current_room and current_room.player and not current_room.player.dead then
-        love.graphics.setColor(default_color)
-        love.graphics.setFont(love.graphics.newFont(14))
-        love.graphics.print('Ship: ' .. current_room.player.ship, 10, 10)
-        love.graphics.setColor(255, 255, 255)
     end
 
     if flash_frames then

@@ -4,6 +4,7 @@ function ProjectileDeathEffect:new(area, x, y, opts)
     ProjectileDeathEffect.super.new(self, area, x, y, opts)
 
     self.color = opts.color
+    self.w = opts.w or 8
 
     self.first = true
 

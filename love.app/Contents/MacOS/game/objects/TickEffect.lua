@@ -6,6 +6,8 @@ function TickEffect:new(area, x, y, opts)
     self.w, self.h = 48, 32
     self.y_offset = 0
 
+    self.depth = 75
+
     self.timer:tween(0.13, self, {
         h = 0,
         y_offset = 32

@@ -17,9 +17,13 @@ function TrailParticle:update(dt)
 end
 
 function TrailParticle:draw()
-    love.graphics.setColor(self.color)
+    if type(self.color) == 'table' and self.color[1] then
+        love.graphics.setColor(self.color[1], self.color[2], self.color[3] or 1)
+    else
+        love.graphics.setColor(self.color or default_color)
+    end
     love.graphics.circle('fill', self.x, self.y, self.r)
-    love.graphics.setColor(default_color)
+    love.graphics.setColor(255, 255, 255)
 end
 
 function TrailParticle:destroy()

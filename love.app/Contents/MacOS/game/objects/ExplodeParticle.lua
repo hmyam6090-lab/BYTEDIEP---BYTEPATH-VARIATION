@@ -26,7 +26,11 @@ end
 function ExplodeParticle:draw()
     pushRotate(self.x, self.y, self.r)
     love.graphics.setLineWidth(self.line_width)
-    love.graphics.setColor(self.color)
+    if type(self.color) == 'table' and self.color[1] then
+        love.graphics.setColor(self.color[1], self.color[2], self.color[3])
+    else
+        love.graphics.setColor(self.color or default_color)
+    end
     love.graphics.line(self.x - self.s, self.y, self.x + self.s, self.y)
     love.graphics.setColor(255, 255, 255)
     love.graphics.setLineWidth(1)
