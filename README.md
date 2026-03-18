@@ -9,7 +9,7 @@ Inspired by [BYTEPATH](https://github.com/a327ex/BYTEPATH) and their great tutor
 Pilot your ship through endless waves of enemies, collecting upgrades to boost your stats, skills, and firepower. Play under 11 different ship classes with unique abilities, face off against massive bosses every 5 waves, and see how long you can survive the increasingly chaotic horde.
 
 ![Gameplay Demo](./assets/gameplay.gif)
-![Game Over](./assets/gameover.png) |
+![Game Over](./assets/gameover.png)
 
 ## Features
 
